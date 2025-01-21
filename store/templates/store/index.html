@@ -1,0 +1,36 @@
+{% extends 'store/main.html' %}
+{% load static %}   
+{% block content %}
+ 
+ 
+ 
+  <section class="bg-light py-4 my-3" style="min-height:600px;">
+    <div class="container" style="margin-top: 70px;">
+      <div class="row">
+        <div class="col-12">
+          <h4 class="mb-3">{{category}} Categories</h4>
+          <hr style="border-color:#b8bfc2;">
+        </div>
+       
+        {% for product in products %}
+        <div class="col-lg-4">
+            <img class="thumbnail" src="{{ product.imageURL }}">
+            <div class="box-element product">
+                <h6><strong>{{product.name}}</strong></h6>
+                <hr>
+                <button data-product={{product.id}}  data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+                <a href="{% url 'store:view' product.id %}"><button type="button" class="btn btn-outline-primary" >View</button><br></a>
+                <h4 style="float: right;">Rs.{{product.price|floatformat:2}}</h4>
+                <a href="{% url 'store:add_to_wishlist' product.id %}" class="btn btn-outline-success my-1"   >Add to Wishlist</a>
+            </div>
+        </div>
+        {% endfor %}
+      </div>
+      </div>
+     
+  </section>
+ 
+ 
+ 
+ 
+{% endblock content %}

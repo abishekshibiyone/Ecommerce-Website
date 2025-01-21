@@ -1,0 +1,83 @@
+{% extends 'store/main.html' %}
+{% load static %}
+
+{% block content %}
+
+<div style="margin-top:70px">
+    <form method="get" action="{% url 'store:store' %}">
+        <input type="text" name="query" placeholder="Search by name" value="{{ query }}">
+        <input type="number" name="min_price" placeholder="Min Price" value="{{ min_price }}">
+        <input type="number" name="max_price" placeholder="Max Price" value="{{ max_price }}">
+        <button type="submit">Filter</button>
+    </form>
+</div>
+
+<div class="row">
+    {% for product in products %}
+    <div class="col-lg-4">
+        <img class="thumbnail" src="{{ product.imageURL }}" alt="{{ product.name }}">
+        <div class="box-element product">
+            <h6><strong>{{ product.name }}</strong></h6>
+            <hr>
+            <button data-product="{{ product.id }}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+            <a href="{% url 'store:view' product.id %}"><button type="button" class="btn btn-outline-primary">View</button></a>
+            <h4 style="float: right;">Rs. {{ product.price|floatformat:2 }}</h4>
+
+            {% if product.id in wish %}
+            <button type="button" class="btn btn-danger wishlist-btn my-1" data-product-id="{{ product.id }}" data-action="remove">
+                Remove from Wishlist
+            </button>
+            {% else %}
+            <button type="button" class="btn btn-outline-success wishlist-btn my-1" data-product-id="{{ product.id }}" data-action="add">
+                Add to Wishlist
+            </button>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const wishlistButtons = document.querySelectorAll('.wishlist-btn');
+
+    wishlistButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent default behavior
+
+            const productId = button.dataset.productId;
+            const action = button.dataset.action;
+
+            fetch(`/wishlist/${action}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify({ product_id: productId }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        if (action === 'add') {
+                            button.textContent = 'Remove from Wishlist';
+                            button.dataset.action = 'remove';
+                            button.classList.remove('btn-outline-success');
+                            button.classList.add('btn-danger');
+                        } else {
+                            button.textContent = 'Add to Wishlist';
+                            button.dataset.action = 'add';
+                            button.classList.remove('btn-danger');
+                            button.classList.add('btn-outline-success');
+                        }
+                    } else {
+                        alert('Failed to update wishlist.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+});
+</script>
+
+{% endblock content %}

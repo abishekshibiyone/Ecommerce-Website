@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Profile Dashboard</title>
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+  	<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3225/3225194.png" type="image/icon type">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <h2>Ecom</h2>
+      <ul>
+        <li><button class="nav-button" data-section="profile">Profile</button></li>
+        <li><button class="nav-button" data-section="orders">My Orders</button></li>
+        <li><button class="nav-button" data-section="editprofile">Edit Profile</button></li>
+        <li><a href="{% url 'store:store' %}"><button class="nav-button" data-section="editprofile">Home</button></a> </li>
+      </ul>
+    </aside>
+    <main class="main-content">
+      <section id="content">
+        <!-- Dynamic content will be displayed here -->
+        <div id="profile">
+          <div class="profile-card">
+            <img src="{{customer.imageURL }}" alt="Profile Picture" class="profile-pic">
+          </div>
+          <div>
+            <h3 class="profile-name">Name: {{customer.name}}</h3><br>
+            <p class="profile-email">Email: {{customer.email}}</p>
+            <p class="profile-email">Address: {{customer.address}}</p>
+            <p class="profile-email">Phone No: {{customer.num}}</p>
+          </div>
+          <div>
+            <h3 class="profile-name">Recent orders</h3>
+            <div class="recent">
+                <img class="thumbnail" src="{% static 'images/placeholder.png' %}">
+                <div class="box-element product">
+                    <h6><strong>Product name</strong></h6>
+                    <hr>
+                    <a class="btn btn-outline-success" href="#">View</a>
+
+                </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const sections = {
+    profile: `
+     <div id="profile">
+          <div class="profile-card">
+            <img src="{{customer.imageURL }}" alt="Profile Picture" class="profile-pic">
+          </div>
+          <div>
+            <h3 class="profile-name">Name: {{customer.name}}</h3><br>
+            <p class="profile-email">Email: {{customer.email}}</p>
+            <p class="profile-email">Address: {{customer.address}}</p>
+            <p class="profile-email">Phone No: {{customer.num}}</p>
+          </div>
+          <div>
+            <h3 class="profile-name">Recent orders</h3>
+            <div class="recent">
+                <img class="thumbnail" src="{% static 'images/placeholder.png' %}">
+                <div class="box-element product">
+                    <h6><strong>Product name</strong></h6>
+                    <hr>
+                    <a class="btn btn-outline-success" href="#">View</a>
+
+                </div>
+            </div>
+          </div>
+        </div>
+    `,
+    orders: `
+     <div class="profile-container">
+    <h2>Welcome, {{ customer.name }}</h2>
+
+    <!-- Recent Orders Section -->
+    <div>
+        <h3 class="profile-name">Recent Orders</h3>
+
+        {% if orderitems %}
+        <div class="row">
+            {% for item in orderitems %}
+            <div class="col-lg-4">
+                <div class="product-card">
+                    <img class="thumbnail" src="{{item.product.imageURL}}" alt="{{ item.product.name }}">
+                    <div class="box-element product">
+                        <h6><strong>{{ item.product.name }}</strong></h6>
+                        <hr>
+                        <div class="product-details">
+                            <p><strong>Order ID:</strong> {{ item.order.id }}</p>
+                            <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+                            <p><strong>Total:</strong> ${{ item.get_total }}</p>
+                        </div>
+                        <div class="product-actions">
+                            <a href="{% url 'store:view' item.product.id %}" class="btn btn-outline-success">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>You have no recent orders yet.</p>
+        {% endif %}
+    </div>
+</div>
+
+
+    `,
+    editprofile: `
+      <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" name="name" value="{{ customer.name }}">
+    </div>
+    <div class="form-group">
+        <label for="num">Number</label>
+        <input type="number" class="form-control" id="num" name="num" value="{{ customer.num }}">
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" name="email" value="{{ customer.email }}">
+    </div>
+    <div class="form-group">
+        <label for="address">Address</label>
+        <input type="text" class="form-control" id="address" name="address" value="{{ customer.address }}">
+    </div>
+    <div class="form-group">
+        <label for="proimg">Profile Image</label>
+        <input type="file" class="form-control" id="proimg" name="proimg">
+    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+    `,
+  };
+
+  const contentDiv = document.getElementById('content');
+  const buttons = document.querySelectorAll('.nav-button');
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const section = button.getAttribute('data-section');
+      contentDiv.innerHTML = sections[section];
+    });
+  });
+});
+</script>
+
+</body>
+</html>
+
+

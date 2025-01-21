@@ -1,0 +1,25 @@
+    {% load static %}
+    <h6><strong>{{products.name}}</strong></h6>
+
+    {% comment %} <div class="row">
+    
+        <div class="col-lg-4">
+            <img 
+           class="thumbnail" src="{{ products.imageURL }}">
+            <div class="box-element product">
+                <h6><strong>{{products.name}}</strong></h6>
+                <hr>
+                <button data-product={{products.id}}  data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+                <h4 style="float: right;">${{products.price|floatformat:2}}</h4>
+            </div>
+        </div>
+    
+    </div>
+         {% endcomment %}
+                <div class="cart-row">
+                    <div style="flex:2"><img class="row-image" src="{{product.imageURL}}"> </div>
+                    <div style="flex:2">{{product.name}}</div>
+                    <div style="flex:1">Rs.{{product.price|floatformat:2}}</div>
+                    <div style="flex:2">{{product.description}}</div>
+                    <div style="flex:2">{{product.stock}} (Stock)</div>
+                </div>
