@@ -32,3 +32,8 @@ class ResetPasswordForm(forms.Form):
     #     if new_password and confirm_password and new_password != confirm_password:
     #         print("hi")
     #         raise forms.ValidationError("Passwords do not match.")
+    
+    class SellerForm(forms.ModelForm):
+        class Meta:
+            model = Seller
+            fields = ['name', 'email', 'phone_number', 'address']

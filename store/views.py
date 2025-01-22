@@ -301,7 +301,7 @@ def remove_from_wishlist(request, product_id):
 	product = get_object_or_404(Product, id=product_id)
 	wishlist = Wishlist.objects.get(user=request.user)
 	wishlist.products.remove(product)
-	return redirect('wishlist')  # Redirect to the wishlist page
+	return redirect('store:wishlist')  # Redirect to the wishlist page
 
 @login_required
 def wishlist(request):
@@ -451,3 +451,13 @@ def collectionsview(request, catagory_name):
 	else:
 		messages.warning(request, "No details are available for the selected category.")
 		return redirect('catagory')
+
+def add_seller(request):
+    if request.method == "POST":
+        form = SellerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('success')  # Replace 'success' with your success page URL
+    else:
+        form = SellerForm()
+    return render(request, 'add_seller.html', {'form': form})

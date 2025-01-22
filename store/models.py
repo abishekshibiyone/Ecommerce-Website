@@ -3,6 +3,16 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class Seller(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
 class Customer(models.Model):
 	user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)  #one to one relationship between user and customer 1 user = 1  customer
 	name = models.CharField(max_length=200, null=True)
@@ -10,7 +20,7 @@ class Customer(models.Model):
 	email = models.CharField(max_length=200)
 	address = models.CharField(max_length=200,default=0, null=True, blank=True)
 	proimg = models.ImageField(null=True, blank=True)
-	last_login = models.DateTimeField(auto_now=True)
+	last_login = models.DateTimeField(null=True,auto_now=True)
 
  
 	@property

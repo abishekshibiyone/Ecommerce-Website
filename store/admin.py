@@ -5,6 +5,7 @@ from .models import *
 class details(admin.ModelAdmin):
     list_display=('name','price','image')
 
+admin.site.register(Seller)
 admin.site.register(Catagory)
 admin.site.register(Customer)
 admin.site.register(Product,details)
