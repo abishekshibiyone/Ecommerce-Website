@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
     `,
     orders: `
-     <div class="profile-container">
+<div class="profile-container">
     <h2>Welcome, {{ customer.name }}</h2>
 
     <!-- Recent Orders Section -->
@@ -91,17 +91,20 @@ document.addEventListener('DOMContentLoaded', () => {
             {% for item in orderitems %}
             <div class="col-lg-4">
                 <div class="product-card">
-                    <img class="thumbnail" src="{{item.product.imageURL}}" alt="{{ item.product.name }}">
+                    <img class="thumbnail" src="{{ item.product.imageURL }}" alt="{{ item.product.name }}">
                     <div class="box-element product">
                         <h6><strong>{{ item.product.name }}</strong></h6>
                         <hr>
                         <div class="product-details">
                             <p><strong>Order ID:</strong> {{ item.order.id }}</p>
                             <p><strong>Quantity:</strong> {{ item.quantity }}</p>
-                            <p><strong>Total:</strong> ${{ item.get_total }}</p>
                         </div>
                         <div class="product-actions">
+                            {% if item.product.id %}
                             <a href="{% url 'store:view' item.product.id %}" class="btn btn-outline-success">View</a>
+                            {% else %}
+                            <p>Product not available</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

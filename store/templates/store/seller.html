@@ -1,0 +1,73 @@
+
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3225/3225194.png" type="image/icon type">
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+	
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, {{ seller.name }}</h1>
+
+    <h2>Your Products</h2>
+    <a href="{% url 'store:seller_addproduct' %}"class="btn btn-warning ml-2" style="border-radius:10%">Add product</a><br>
+<div class="container">
+<div class="row">
+    {% for product in products %}
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+        <div class="card h-100">
+            <img class="thumbnail img-fluid" src="{{ product.imageURL }}" alt="{{ product.name }}">
+            <div class="box-element product">
+                <h6><strong>{{ product.name }}</strong></h6>
+                <hr>
+                <!-- Button container with flexbox to display horizontally -->
+                <div class="d-flex justify-content-start align-items-center">
+                    <a href="{% url 'store:view' product.id %}">
+                        <button type="button" class="btn btn-outline-primary mx-1">View</button>
+                    </a>
+                    <a href="{% url 'store:edit_product' product.id %}">
+                        <button type="button" class="btn btn-outline-primary mx-1">Edit</button>
+                    </a>
+
+                    <form method="POST" action="{% url 'store:delete_product' product.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger mx-1">Delete</button>
+                    </form>
+                </div>
+                <h4 class="mt-3" style="float:right;">Rs. {{ product.price|floatformat:2 }}</h4>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+</div>
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+	<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+
+</body>
+</html>
+{% endblock content %}

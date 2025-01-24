@@ -33,7 +33,12 @@ class ResetPasswordForm(forms.Form):
     #         print("hi")
     #         raise forms.ValidationError("Passwords do not match.")
     
-    class SellerForm(forms.ModelForm):
-        class Meta:
-            model = Seller
-            fields = ['name', 'email', 'phone_number', 'address']
+class SellerForm(forms.ModelForm):
+    class Meta:
+        model = Seller
+        fields = ['name', 'email', 'phone_number', 'address']
+            
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'price', 'digital', 'image', 'description', 'stock', 'catagory_name']

@@ -10,6 +10,10 @@ app_name='store'
 urlpatterns = [
     path('',views.store, name="store"),
     path('login/', views.loginPage, name='login'),
+    path('seller/', views.seller, name='seller'),
+    path('seller_login/', views.seller_login, name='seller_login'),
+    path('seller_register/', views.seller_register, name='seller_register'),
+    path('seller_addproduct/', views.seller_addproduct, name='seller_addproduct'),
     path('logout/', views.logoutPage, name='logout'),
     path('cart/',views.cart, name="cart"),
     path('checkout/',views.checkout, name="checkout"),
@@ -27,4 +31,6 @@ urlpatterns = [
     path('view/<int:product_id>/', views.view, name='view'),
     path('forgot/',views.forgot, name="forgot"),
     path('resetpassword/<uidb64>/<token>/', views.resetpassword, name='resetpassword'),
+    path('product/edit/<int:product_id>/', views.edit_product, name='edit_product'),
+    path('product/delete/<int:product_id>/', views.delete_product, name='delete_product'),
 ]

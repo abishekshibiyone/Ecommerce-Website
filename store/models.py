@@ -4,14 +4,15 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Seller(models.Model):
-    name = models.CharField(max_length=255)
-    email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=15, blank=True, null=True)
-    address = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+	name = models.CharField(max_length=255)
+	email = models.EmailField(unique=True)
+	password = models.CharField(max_length=255,default=0, null=True, blank=True)
+	phone_number = models.CharField(max_length=15, blank=True, null=True)
+	address = models.TextField(blank=True, null=True)
+	created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.name
+	def __str__(self):
+		return self.name
 
 class Customer(models.Model):
 	user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)  #one to one relationship between user and customer 1 user = 1  customer
@@ -48,6 +49,7 @@ class Catagory(models.Model):
 		return self.catagory_name
 
 class Product(models.Model):
+	seller=models.ForeignKey(Seller,on_delete=models.CASCADE,null=True)
 	catagory_name = models.ForeignKey(Catagory, on_delete=models.CASCADE)
 	name = models.CharField(max_length=150, null=False, blank=False)
 	price = models.FloatField()
@@ -139,7 +141,6 @@ class Wishlist(models.Model):
 	def __str__(self):
 		return f"Wishlist of {self.user.username}"
 	
-
 class Coupon(models.Model):
 	code = models.CharField(max_length=50, unique=True)
 	discount = models.DecimalField(max_digits=5, decimal_places=2)  # Example: 20.00 for 20%
