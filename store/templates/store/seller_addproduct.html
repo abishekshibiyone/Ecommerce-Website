@@ -26,12 +26,12 @@
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-floating mb-3">
-                        <select class="form-control" id="catagory_name" name="catagory_name" required>
+                        <select class="form-control" id="category_name" name="category_name" required>
                             {% for category in categories %}
-                                <option value="{{ category.id }}">{{ category.catagory_name }}</option>
+                                <option value="{{ category.id }}">{{ category.category_name }}</option>
                             {% endfor %}
                         </select>
-                        <label for="catagory_name">Category Name</label>
+                        <label for="category_name">Category Name</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="name" name="name" placeholder="Product Name">

@@ -41,4 +41,4 @@ class SellerForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'price', 'digital', 'image', 'description', 'stock', 'catagory_name']
+        fields = ['name', 'price', 'digital', 'image', 'description', 'stock', 'category_name']

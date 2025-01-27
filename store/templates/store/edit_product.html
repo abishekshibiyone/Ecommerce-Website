@@ -42,10 +42,10 @@
 
     <!-- Category -->
     <div class="form-group">
-      <label for="catagory_name">Category</label>
-      <select class="form-control" id="catagory_name" name="catagory_name">
+      <label for="category_name">Category</label>
+      <select class="form-control" id="category_name" name="category_name">
         {% for category in categories %}
-          <option value="{{ category.id }}" {% if category.id == product.catagory.id %} selected {% endif %}>{{ category.catagory_name }}</option>
+          <option value="{{ category.id }}" {% if category.id == product.category.id %} selected {% endif %}>{{ category.category_name }}</option>
         {% endfor %}
       </select>
     </div>

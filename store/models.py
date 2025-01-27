@@ -38,19 +38,19 @@ class Customer(models.Model):
 	def get_email_field_name(self):
 		return 'email'
 	
-class Catagory(models.Model):
-	catagory_name = models.CharField(max_length=150, null=False, blank=False)
+class Category(models.Model):
+	category_name = models.CharField(max_length=150, null=False, blank=False)
 	image = models.ImageField(null=True, blank=True)
 	Description = models.TextField(max_length=500, null=False, blank=False)
 	status = models.BooleanField(default=False, help_text="0-Show, 1-Hidden")
 	created_at = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
-		return self.catagory_name
+		return self.category_name
 
 class Product(models.Model):
 	seller=models.ForeignKey(Seller,on_delete=models.CASCADE,null=True)
-	catagory_name = models.ForeignKey(Catagory, on_delete=models.CASCADE)
+	category_name = models.ForeignKey(Category, on_delete=models.CASCADE)
 	name = models.CharField(max_length=150, null=False, blank=False)
 	price = models.FloatField()
 	digital = models.BooleanField(default=False, null=True, blank=True)

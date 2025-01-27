@@ -11,15 +11,15 @@
           <h4 class="mb-3">Categories</h4>
           <hr style="border-color:#b8bfc2;">
         </div>
-        {% for item in catagory %}
+        {% for item in category %}
         <div class="col-lg-4">
           <div class="card my-3">
             <img src="{{item.image.url}}"  class="thumbnail" alt="Categories">
             <div class="box-element product">
-            <a href="{% url 'store:collectionsview' item.catagory_name %}"> 
+            <a href="{% url 'store:collections_view' item.category_name %}"> 
  
             <div class="card-body">
-              <h5 class="card-title text-primary">{{item.catagory_name}}</h5>
+              <h5 class="card-title text-primary">{{item.category_name}}</h5>
               <p class="card-text">{{item.Description}}</p>
    
             </div>

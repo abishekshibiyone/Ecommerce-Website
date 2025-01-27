@@ -280,7 +280,7 @@ def seller_register(request):
 
 	return render(request,'store/seller_register.html')
 
-def seller_addproduct(request):
+def seller_add_product(request):
 	# Get seller ID from session
 	seller_id = request.session.get('seller_id')
 	if not seller_id:
@@ -300,19 +300,19 @@ def seller_addproduct(request):
 		description = request.POST.get('description')
 		image = request.FILES.get('image')
 		stock = request.POST.get('stock')
-		category_id = request.POST.get('catagory_name')  # Fetch the category name from the form
+		category_id = request.POST.get('category_name')  # Fetch the category name from the form
 
 		try:
 			# Fetch the category object using its name
-			category = Catagory.objects.get(id=category_id)
-		except Catagory.DoesNotExist:
+			category = category.objects.get(id=category_id)
+		except category.DoesNotExist:
 			messages.error(request, "Invalid category.")
 			return redirect('store:seller_addproduct')
 
 		# Create the product
 		Product.objects.create(
 			seller=seller,
-			catagory_name=category,
+			category_name=category,
 			name=name,
 			price=price,
 			description=description,
@@ -321,7 +321,7 @@ def seller_addproduct(request):
 		)
 		messages.success(request, "Product added successfully!")
 		return redirect('store:seller')  # Redirect to the same page after adding the product
-	categories = Catagory.objects.all()
+	categories = category.objects.all()
 	# Pass the seller and other context data to the template
 	context = {'seller': seller, 'categories': categories}
 	return render(request, 'store/seller_addproduct.html', context)
@@ -540,21 +540,29 @@ def checkout(request):
 
 	return render(request, 'store/checkout.html', context)
 
-def catagory(request):
+def categories(request):
 	data = cartData(request)
 	cartItems = data['cartItems']
-	catagory = Catagory.objects.filter(status=0)
-	return render(request,'store/catagory.html',{"catagory":catagory,'cartItems': cartItems})
+	category = Category.objects.filter(status=0)
+	return render(request,'store/category.html',{"category":category,'cartItems': cartItems})
  
-def collectionsview(request, catagory_name):
-	data = cartData(request)
-	cartItems = data['cartItems']
-	if Catagory.objects.filter(catagory_name=catagory_name, status=0).exists():
-		products = Product.objects.filter(catagory_name__catagory_name=catagory_name)
-		return render(request, 'store/index.html', {"products": products, "category": catagory_name,'cartItems': cartItems})
-	else:
-		messages.warning(request, "No details are available for the selected category.")
-		return redirect('catagory')
+def collections_view(request, category_name):
+    data = cartData(request)  # Assuming cartData is implemented correctly
+    cartItems = data['cartItems']
+
+    # Check if the category exists
+    if Category.objects.filter(category_name=category_name, status=0).exists():
+        # Fetch products belonging to the category
+        products = Product.objects.filter(category_name__category_name=category_name)
+        return render(request, 'store/index.html', {
+            "products": products,
+            "category": category_name,
+            'cartItems': cartItems
+        })
+    else:
+        # If the category doesn't exist
+        messages.warning(request, "No details are available for the selected category.")
+        return redirect('categories')  # Redirect to the categories page
 
 def add_seller(request):
 	if request.method == "POST":
@@ -568,7 +576,7 @@ def add_seller(request):
 
 def edit_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-    categories = Catagory.objects.all()  # Fetch all categories
+    categories = category.objects.all()  # Fetch all categories
 
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
