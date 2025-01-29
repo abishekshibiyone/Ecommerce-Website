@@ -304,7 +304,7 @@ def seller_add_product(request):
 
 		try:
 			# Fetch the category object using its name
-			category = category.objects.get(id=category_id)
+			category = Category.objects.get(id=category_id)
 		except category.DoesNotExist:
 			messages.error(request, "Invalid category.")
 			return redirect('store:seller_addproduct')
@@ -321,7 +321,7 @@ def seller_add_product(request):
 		)
 		messages.success(request, "Product added successfully!")
 		return redirect('store:seller')  # Redirect to the same page after adding the product
-	categories = category.objects.all()
+	categories = Category.objects.all()
 	# Pass the seller and other context data to the template
 	context = {'seller': seller, 'categories': categories}
 	return render(request, 'store/seller_addproduct.html', context)
@@ -500,9 +500,12 @@ def checkout(request):
 	cartItems = data['cartItems']
 	order = data['order']
 	items = data['items']
-	
+	total_price=0
 	# Calculate total price using the order's get_cart_total method
-	total_price = Decimal(order.get_cart_total)  # Ensure it's a Decimal
+	if request.user.is_authenticated:
+		total_price = Decimal(order.get_cart_total)  # Ensure it's a Decimal
+	else:
+		total_price = Decimal(order['get_cart_total']) 
 	
 	# Initialize discount and coupon variables
 	discount = Decimal('0.00')
@@ -576,7 +579,7 @@ def add_seller(request):
 
 def edit_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-    categories = category.objects.all()  # Fetch all categories
+    categories = Category.objects.all()  # Fetch all categories
 
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)

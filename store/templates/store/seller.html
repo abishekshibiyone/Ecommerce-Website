@@ -27,7 +27,7 @@
     <h1>Welcome, {{ seller.name }}</h1>
 
     <h2>Your Products</h2>
-    <a href="{% url 'store:seller_addproduct' %}"class="btn btn-warning ml-2" style="border-radius:10%">Add product</a><br>
+    <a href="{% url 'store:seller_add_product' %}"class="btn btn-warning ml-2" style="border-radius:10%">Add product</a><br>
 <div class="container">
 <div class="row">
     {% for product in products %}
